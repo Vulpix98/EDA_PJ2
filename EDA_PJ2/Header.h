@@ -14,4 +14,4 @@ typedef struct registo2
 
 
 
-Grafo* createGraph(Grafo* grp);
+Grafo* createGraph();
