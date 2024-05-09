@@ -16,3 +16,6 @@ typedef struct registo2
 
 Grafo* insertVertex(Grafo* grafo, int vertice, Aresta* aresta);
 Grafo* createGraph();
+
+
+void listar(Grafo* grafo);

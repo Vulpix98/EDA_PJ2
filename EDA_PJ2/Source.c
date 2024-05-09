@@ -10,9 +10,30 @@ void main()
 	Grafo* grafo = NULL;
 
 	grafo = createGraph();
-	printf("teste");
-	
+
+	listar(grafo);
 }
+
+
+
+void listar(Grafo* grafo) 
+{
+	while (grafo != NULL)
+	{
+		/*
+		Future implemention
+
+		Aresta* aresta = grafo->aresta;
+		while (aresta != NULL)
+		{
+			printf("%d ", aresta->valor);
+			aresta = aresta->seguinte;
+		}*/
+		printf("vertices: %d\n", grafo->vertice);
+		grafo = grafo->seguinte;
+	}
+}
+
 
 Grafo* createGraph() 
 {
@@ -56,6 +77,8 @@ Grafo* createGraph()
 
 	return (grafo);
 }
+
+
 
 Grafo* insertVertex(Grafo* grafo, int vertice, Aresta* aresta) 
 {
