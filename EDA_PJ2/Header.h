@@ -11,3 +11,7 @@ typedef struct registo2
     Aresta* aresta;
     struct registo2* seguinte;
 } Grafo;
+
+
+
+Grafo* createGraph(Grafo* grp);
