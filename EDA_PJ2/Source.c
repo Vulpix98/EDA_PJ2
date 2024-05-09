@@ -29,6 +29,8 @@ void listar(Grafo* grafo)
 			printf("%d ", aresta->valor);
 			aresta = aresta->seguinte;
 		}*/
+
+		//printf("vertices: %d   x: %d   y: %d\n", grafo->vertice, grafo->x, grafo->y);
 		printf("vertices: %d\n", grafo->vertice);
 		grafo = grafo->seguinte;
 	}
