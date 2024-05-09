@@ -8,13 +8,15 @@ typedef struct registo
 typedef struct registo2
 {
     int vertice;
+    int x;
+    int y;
     Aresta* aresta;
     struct registo2* seguinte;
 } Grafo;
 
 
 
-Grafo* insertVertex(Grafo* grafo, int vertice, Aresta* aresta);
+Grafo* insertLastVertex(Grafo* grafo, int vertice, int x, int y, Aresta* aresta);
 Grafo* createGraph();
 
 
