@@ -43,7 +43,7 @@ Grafo* createGraph()
 
 	char line[1024];
 	char* token;
-	int valor;
+	int valor, x=0, y=0;
 
 	// Opening file in reading mode
 	fp = fopen("matriz.txt", "r");
@@ -51,22 +51,24 @@ Grafo* createGraph()
 	if (fp != NULL) 
 	{
 		// Read each line of the file
-		while (fgets(line, sizeof line, fp) != NULL /*&& row < ROWS*/) {
+		while (fgets(line, sizeof line, fp) != NULL) {
 			//new line, set to default (null and zero)
 			//linha = NULL;
 			
 			// Tokenize the line by semicolons
 			token = strtok(line, ";");
 
-			while (token != NULL /*&& col < COLS*/) {
+			while (token != NULL) {
 				// Convert token to integer and store in the matrix
 				valor = atoi(token);
 
-				grafo = insertVertex(grafo, valor, aresta);
+				grafo = insertLastVertex(grafo, valor, x, y, aresta);
 				
 				token = strtok(NULL, ";");
-
-			}			
+				x++;
+			}
+			y++;
+			x = 0;
 		}
 	}
 	else printf("file can't be opened \n"); //fail to open file
@@ -80,7 +82,7 @@ Grafo* createGraph()
 
 
 
-Grafo* insertVertex(Grafo* grafo, int vertice, Aresta* aresta) 
+Grafo* insertLastVertex(Grafo* grafo, int vertice, int x, int y, Aresta* aresta)
 {
 	if (grafo == NULL) 
 	{
@@ -89,6 +91,8 @@ Grafo* insertVertex(Grafo* grafo, int vertice, Aresta* aresta)
 		{
 			novoGrafo->vertice = vertice;
 			novoGrafo->aresta = aresta;
+			novoGrafo->x = x;
+			novoGrafo->y = y;
 			novoGrafo->seguinte = NULL;
 			
 			return (novoGrafo);
@@ -97,7 +101,7 @@ Grafo* insertVertex(Grafo* grafo, int vertice, Aresta* aresta)
 	}
 	else
 	{
-		grafo->seguinte = insertVertex(grafo->seguinte, vertice, aresta);
+		grafo->seguinte = insertLastVertex(grafo->seguinte, vertice, x, y, aresta);
 		return (grafo);
 	}
 }
