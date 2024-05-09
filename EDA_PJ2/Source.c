@@ -3,9 +3,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include "Header.h"
 
 void main() {
 
 	//test2
 	
 }
+
