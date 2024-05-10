@@ -11,8 +11,17 @@ void main()
 
 	grafo = createGraph();
 
+	grafo = insertEdgeToVertex(grafo);
+
 	listar(grafo);
+
+	//test to add Edges
+	/*grafo = insertLastEdge(grafo, 53, 0, 0);
+	grafo = insertLastEdge(grafo, 99, 0, 0);
+	grafo = insertLastEdge(grafo, 98, 0, 0);
+	grafo = insertLastEdge(grafo, 98, 4, 3);*/
 }
+
 
 
 
@@ -20,23 +29,26 @@ void listar(Grafo* grafo)
 {
 	while (grafo != NULL)
 	{
-		/*
-		Future implemention
+		printf("V(%d, %d): %d    A", grafo->x, grafo->y, grafo->vertice);
 
 		Aresta* aresta = grafo->aresta;
+
 		while (aresta != NULL)
 		{
-			printf("%d ", aresta->valor);
-			aresta = aresta->seguinte;
-		}*/
+			printf("->%d", aresta->valor);
 
-		//printf("vertices: %d   x: %d   y: %d\n", grafo->vertice, grafo->x, grafo->y);
-		printf("vertices: %d\n", grafo->vertice);
+			aresta = aresta->seguinte;
+		}
+
+		printf("\n");
+		
 		grafo = grafo->seguinte;
 	}
 }
 
 
+// read file "matriz.txt"
+// create the Vertex on linked-list
 Grafo* createGraph() 
 {
 	FILE* fp;
@@ -83,6 +95,55 @@ Grafo* createGraph()
 }
 
 
+// insert all the Edge to their respective Vertex
+// condiction of Edge: horizontal and vertical
+// will create the Graph (linked-list of linked-list)
+Grafo* insertEdgeToVertex(Grafo* grafo)
+{
+	Grafo* grf1 = grafo;
+	Grafo* grf2 = grafo;
+
+	while (grf1 != NULL)
+	{
+		grf2 = grafo;
+		while (grf2 != NULL)
+		{
+			// ele esta a entrar quando grf2 é o segundo vertice
+
+			// test horizontal left
+			if ((grf1->x - 1 == grf2->x) && (grf1->y == grf2->y)  )
+			{
+				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
+			}
+
+			// test horizontal right
+			if ((grf1->x + 1 == grf2->x) && (grf1->y == grf2->y))
+			{
+				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
+			}
+
+			// test vertical up
+			if ((grf1->x == grf2->x) && (grf1->y + 1 == grf2->y))
+			{
+				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
+			}
+
+			// test vertical down
+			if ((grf1->x == grf2->x) && (grf1->y - 1 == grf2->y))
+			{
+				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
+			}
+
+			grf2 = grf2->seguinte;
+		}
+
+		grf1 = grf1->seguinte;
+	}
+
+	return (grafo);
+}
+
+
 
 Grafo* insertLastVertex(Grafo* grafo, int vertice, int x, int y, Aresta* aresta)
 {
@@ -104,6 +165,53 @@ Grafo* insertLastVertex(Grafo* grafo, int vertice, int x, int y, Aresta* aresta)
 	else
 	{
 		grafo->seguinte = insertLastVertex(grafo->seguinte, vertice, x, y, aresta);
+		return (grafo);
+	}
+}
+
+
+
+Aresta* insertEdge(Aresta* aresta, int valor)
+{
+	if (aresta == NULL)
+	{
+		Aresta* novaAresta = malloc(sizeof(Aresta));
+
+		if (novaAresta != NULL)
+		{
+			novaAresta->valor = valor;
+			novaAresta->seguinte = NULL;
+
+			return (novaAresta);
+		}
+		else return (aresta);
+	}
+	else
+	{
+		aresta->seguinte = insertEdge(aresta->seguinte, valor);
+		return (aresta);
+	}
+}
+
+
+
+Grafo* insertLastEdge(Grafo* grafo, int valor, int x, int y)
+{
+	Aresta* aresta = grafo->aresta;
+
+	if (grafo == NULL) return (grafo);
+
+	if ((grafo->x == x) && (grafo->y == y) )
+	{
+		aresta = insertEdge(aresta, valor);
+
+		grafo->aresta = aresta;
+
+		return (grafo);		
+	}
+	else
+	{
+		grafo->seguinte = insertLastEdge(grafo->seguinte, valor, x, y);
 		return (grafo);
 	}
 }
