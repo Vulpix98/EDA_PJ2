@@ -15,6 +15,9 @@ typedef struct registo2
 } Grafo;
 
 
+
+
+Aresta* insertEdge(Aresta* aresta, int valor);
 Grafo* insertLastEdge(Grafo* grafo, int valor, int x, int y);
 
 
