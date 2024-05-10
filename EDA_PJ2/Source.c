@@ -11,13 +11,15 @@ void main()
 
 	grafo = createGraph();
 
+	grafo = insertEdgeToVertex(grafo);
+
+	listar(grafo);
+
 	//test to add Edges
 	/*grafo = insertLastEdge(grafo, 53, 0, 0);
 	grafo = insertLastEdge(grafo, 99, 0, 0);
 	grafo = insertLastEdge(grafo, 98, 0, 0);
 	grafo = insertLastEdge(grafo, 98, 4, 3);*/
-
-	listar(grafo);
 }
 
 
@@ -27,14 +29,14 @@ void listar(Grafo* grafo)
 {
 	while (grafo != NULL)
 	{
-		
-		//printf("vertices: %d   x: %d   y: %d\n", grafo->vertice, grafo->x, grafo->y);
-		printf("vertices: %d", grafo->vertice);
+		printf("V(%d, %d): %d    A", grafo->x, grafo->y, grafo->vertice);
 
 		Aresta* aresta = grafo->aresta;
+
 		while (aresta != NULL)
 		{
-			printf(" aresta: %d ", aresta->valor);
+			printf("->%d", aresta->valor);
+
 			aresta = aresta->seguinte;
 		}
 
@@ -45,7 +47,8 @@ void listar(Grafo* grafo)
 }
 
 
-
+// read file "matriz.txt"
+// create the Vertex on linked-list
 Grafo* createGraph() 
 {
 	FILE* fp;
@@ -87,6 +90,55 @@ Grafo* createGraph()
 	// Closing the file
 	fclose(fp);
 
+
+	return (grafo);
+}
+
+
+// insert all the Edge to their respective Vertex
+// condiction of Edge: horizontal and vertical
+// will create the Graph (linked-list of linked-list)
+Grafo* insertEdgeToVertex(Grafo* grafo)
+{
+	Grafo* grf1 = grafo;
+	Grafo* grf2 = grafo;
+
+	while (grf1 != NULL)
+	{
+		grf2 = grafo;
+		while (grf2 != NULL)
+		{
+			// ele esta a entrar quando grf2 é o segundo vertice
+
+			// test horizontal left
+			if ((grf1->x - 1 == grf2->x) && (grf1->y == grf2->y)  )
+			{
+				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
+			}
+
+			// test horizontal right
+			if ((grf1->x + 1 == grf2->x) && (grf1->y == grf2->y))
+			{
+				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
+			}
+
+			// test vertical up
+			if ((grf1->x == grf2->x) && (grf1->y + 1 == grf2->y))
+			{
+				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
+			}
+
+			// test vertical down
+			if ((grf1->x == grf2->x) && (grf1->y - 1 == grf2->y))
+			{
+				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
+			}
+
+			grf2 = grf2->seguinte;
+		}
+
+		grf1 = grf1->seguinte;
+	}
 
 	return (grafo);
 }
