@@ -15,6 +15,8 @@ void main()
 
 	listar(grafo);
 
+	menu(grafo);
+
 	//test to add Edges
 	/*grafo = insertLastEdge(grafo, 53, 0, 0);
 	grafo = insertLastEdge(grafo, 99, 0, 0);
@@ -22,6 +24,38 @@ void main()
 	grafo = insertLastEdge(grafo, 98, 4, 3);*/
 }
 
+
+
+void menu(Grafo* grafo)
+{
+	int option;
+
+	do
+	{
+		printf("1- Listar\n");
+		printf("2- Futuras implementacoes\n");
+		printf("3- Futuras implementacoes\n");
+		printf("0- Sair\n\n");
+		printf("Opcao: ");
+		scanf("%d", &option);
+
+
+		switch (option)
+		{
+		case 0:
+			return (0);
+			break;
+
+		case 1:
+			listar(grafo);
+			break;
+
+		default:
+			printf("Valor invalido");
+			break;
+		}
+	} while (option != 0);
+}
 
 
 
