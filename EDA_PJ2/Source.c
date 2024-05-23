@@ -11,7 +11,7 @@ void main()
 
 	grafo = createGraph();
 
-	grafo = insertEdgeToVertex(grafo);
+	//grafo = insertEdgeToVertex(grafo, 0);
 
 	listar(grafo);
 
@@ -33,8 +33,8 @@ void menu(Grafo* grafo)
 	do
 	{
 		printf("1) Menu Principal\n\n");
-		printf("1- Listar\n");
-		printf("2- Futuras implementacoes\n");
+		printf("1- Orientacao do grafo\n");
+		printf("2- Listar\n");
 		printf("3- Futuras implementacoes\n");
 		printf("0- Sair\n\n");
 		printf("Opcao: ");
@@ -48,9 +48,12 @@ void menu(Grafo* grafo)
 			break;
 
 		case 1:
+			grafo = menuOrientacao(grafo);
+			break;
+		case 2:
 			listar(grafo);
 			break;
-
+			
 		default:
 			printf("Valor invalido");
 			break;
@@ -73,6 +76,8 @@ Grafo* menuOrientacao(Grafo* grafo)
 		printf("0- Sair\n\n");
 		printf("Opcao: ");
 		scanf("%d", &valor);
+
+		insertEdgeToVertex(grafo, valor);
 
 
 	} while (valor != 0);
@@ -152,10 +157,11 @@ Grafo* createGraph()
 }
 
 
+
 // insert all the Edge to their respective Vertex
 // condiction of Edge: horizontal and vertical
 // will create the Graph (linked-list of linked-list)
-Grafo* insertEdgeToVertex(Grafo* grafo)
+Grafo* insertEdgeToVertex(Grafo* grafo, int orientacao)
 {
 	Grafo* grf1 = grafo;
 	Grafo* grf2 = grafo;
@@ -165,31 +171,24 @@ Grafo* insertEdgeToVertex(Grafo* grafo)
 		grf2 = grafo;
 		while (grf2 != NULL)
 		{
-			// ele esta a entrar quando grf2 é o segundo vertice
-
-			// test horizontal left
-			/*if ((grf1->x - 1 == grf2->x) && (grf1->y == grf2->y)  )
+			switch (orientacao)
 			{
-				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
-			}*/
-
-			// test horizontal right
-			if ((grf1->x + 1 == grf2->x) && (grf1->y == grf2->y))
-			{
-				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
+			case 1:
+				grafo = testEdgeRight(grafo, grf1, grf2);
+				grafo = testEdgeDown(grafo, grf1, grf2);
+				break;
+			case 2:
+				grafo = testEdgeLeft(grafo, grf1, grf2);
+				grafo = testEdgeUp(grafo, grf1, grf2);
+				break;
+			case 3:
+				grafo = testEdgeRight(grafo, grf1, grf2);
+				grafo = testEdgeLeft(grafo, grf1, grf2);
+				grafo = testEdgeDown(grafo, grf1, grf2);
+				grafo = testEdgeUp(grafo, grf1, grf2);
+			default:
+				break;
 			}
-
-			// test vertical down
-			if ((grf1->x == grf2->x) && (grf1->y + 1 == grf2->y))
-			{
-				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
-			}
-
-			// test vertical up
-			/*if ((grf1->x == grf2->x) && (grf1->y - 1 == grf2->y))
-			{
-				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
-			}*/
 
 			grf2 = grf2->seguinte;
 		}
@@ -198,6 +197,38 @@ Grafo* insertEdgeToVertex(Grafo* grafo)
 	}
 
 	return (grafo);
+}
+
+
+
+Grafo* testEdgeRight(Grafo* grafo, Grafo* grf1, Grafo* grf2)
+{
+	if ((grf1->x + 1 == grf2->x) && (grf1->y == grf2->y)) return (grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y));
+	else return (grafo);
+}
+
+
+
+Grafo* testEdgeLeft(Grafo* grafo, Grafo* grf1, Grafo* grf2)
+{
+	if ((grf1->x - 1 == grf2->x) && (grf1->y == grf2->y)) return (grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y));
+	else return (grafo);	
+}
+
+
+
+Grafo* testEdgeUp(Grafo* grafo, Grafo* grf1, Grafo* grf2)
+{
+	if ((grf1->x == grf2->x) && (grf1->y - 1 == grf2->y)) return (grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y));
+	return (grafo);
+}
+
+
+
+Grafo* testEdgeDown(Grafo* grafo, Grafo* grf1, Grafo* grf2)
+{
+	if ((grf1->x == grf2->x) && (grf1->y + 1 == grf2->y)) return (grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y));
+	else return (grafo);
 }
 
 
