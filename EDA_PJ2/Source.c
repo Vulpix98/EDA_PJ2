@@ -11,7 +11,8 @@ void main()
 
 	grafo = createGraph();
 
-	//grafo = insertEdgeToVertex(grafo, 0);
+	// serve para testes
+	grafo = insertEdgeToVertex(grafo, 3);
 
 	listar(grafo);
 
@@ -39,6 +40,7 @@ void menu(Grafo* grafo)
 		printf("0- Sair\n\n");
 		printf("Opcao: ");
 		scanf("%d", &option);
+		printf("\n\n\n");
 
 
 		switch (option)
@@ -76,8 +78,18 @@ Grafo* menuOrientacao(Grafo* grafo)
 		printf("0- Sair\n\n");
 		printf("Opcao: ");
 		scanf("%d", &valor);
+		printf("\n\n\n");
 
-		insertEdgeToVertex(grafo, valor);
+		if (valor != 0) 
+		{
+			//1º se o grafo possuir arestas
+			//  remover as arestas do grafo
+			//  mantem os vertices
+			grafo = deleteEdge(grafo);
+
+			// 2º inserir as arestas
+			grafo = insertEdgeToVertex(grafo, valor);
+		}
 
 
 	} while (valor != 0);
@@ -106,6 +118,7 @@ void listar(Grafo* grafo)
 		
 		grafo = grafo->seguinte;
 	}
+	printf("\n\n\n");
 }
 
 
@@ -152,6 +165,33 @@ Grafo* createGraph()
 	// Closing the file
 	fclose(fp);
 
+
+	return (grafo);
+}
+
+
+
+Grafo* deleteEdge(Grafo* grafo)
+{
+	Grafo* aux = grafo;
+	Aresta* aresta = grafo->aresta;
+	Aresta* arestaSeguinte = NULL;
+
+	
+	while (aux != NULL) // percorre o grafo (lista ligada do vertice)
+	{
+		while (aresta != NULL) // percorre as arestas do vertice 'aux'
+		{
+			arestaSeguinte = aresta->seguinte; // guardar a aresta seguite
+
+			free(aresta); // limpar a memoria da aresta
+
+			aresta = arestaSeguinte; // atribuir a aresta seguite a aresta
+				
+		}
+		aux->aresta = NULL; // no vertice, a aresta dele tem que ser NULL
+		aux = aux->seguinte; // vertice seguinte
+	}
 
 	return (grafo);
 }

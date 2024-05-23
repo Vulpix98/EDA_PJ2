@@ -32,6 +32,7 @@ Grafo* testEdgeDown(Grafo* grafo, Grafo* grf1, Grafo* grf2);
 
 Grafo* insertLastVertex(Grafo* grafo, int vertice, int x, int y, Aresta* aresta);
 Grafo* createGraph();
+Grafo* deleteEdge(Grafo* grafo);
 
 
 Grafo* menuOrientacao(Grafo* grafo);
