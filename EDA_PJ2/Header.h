@@ -29,5 +29,8 @@ Grafo* insertLastVertex(Grafo* grafo, int vertice, int x, int y, Aresta* aresta)
 Grafo* createGraph();
 
 
+Grafo* menuOrientacao(Grafo* grafo);
+
+
 void menu(Grafo* grafo);
 void listar(Grafo* grafo);

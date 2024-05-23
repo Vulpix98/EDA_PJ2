@@ -32,6 +32,7 @@ void menu(Grafo* grafo)
 
 	do
 	{
+		printf("1) Menu Principal\n\n");
 		printf("1- Listar\n");
 		printf("2- Futuras implementacoes\n");
 		printf("3- Futuras implementacoes\n");
@@ -55,6 +56,28 @@ void menu(Grafo* grafo)
 			break;
 		}
 	} while (option != 0);
+}
+
+
+
+Grafo* menuOrientacao(Grafo* grafo) 
+{
+	int valor;
+
+	do
+	{
+		printf("2) Menu Orientacao\n\n");
+		printf("1- Direita e Baixo\n");
+		printf("2- Esquerda e Cima\n");
+		printf("3- Ambos as opcoes\n");
+		printf("0- Sair\n\n");
+		printf("Opcao: ");
+		scanf("%d", &valor);
+
+
+	} while (valor != 0);
+
+	return (grafo);
 }
 
 
@@ -145,10 +168,10 @@ Grafo* insertEdgeToVertex(Grafo* grafo)
 			// ele esta a entrar quando grf2 é o segundo vertice
 
 			// test horizontal left
-			if ((grf1->x - 1 == grf2->x) && (grf1->y == grf2->y)  )
+			/*if ((grf1->x - 1 == grf2->x) && (grf1->y == grf2->y)  )
 			{
 				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
-			}
+			}*/
 
 			// test horizontal right
 			if ((grf1->x + 1 == grf2->x) && (grf1->y == grf2->y))
@@ -156,17 +179,17 @@ Grafo* insertEdgeToVertex(Grafo* grafo)
 				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
 			}
 
-			// test vertical up
+			// test vertical down
 			if ((grf1->x == grf2->x) && (grf1->y + 1 == grf2->y))
 			{
 				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
 			}
 
-			// test vertical down
-			if ((grf1->x == grf2->x) && (grf1->y - 1 == grf2->y))
+			// test vertical up
+			/*if ((grf1->x == grf2->x) && (grf1->y - 1 == grf2->y))
 			{
 				grafo = insertLastEdge(grafo, grf2->vertice, grf1->x, grf1->y);
-			}
+			}*/
 
 			grf2 = grf2->seguinte;
 		}
