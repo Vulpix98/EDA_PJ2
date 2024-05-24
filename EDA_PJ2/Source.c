@@ -59,14 +59,13 @@ void menu(Grafo* grafo)
 
 		case 3:
 		{
-			// Testar DFS
 			int profundidade = 0;
 			int* visitado = (int*)calloc(100, sizeof(int)); // Assume no máximo 100 vértices
 			int* emProcessamento = (int*)calloc(100, sizeof(int)); // Status dos vértices em processamento
 
 			printf("Procura em profundidade: ");
 			scanf("%d", &profundidade);
-			int temCiclo = DFS(grafo, profundidade, visitado, emProcessamento); // Começar a partir do vértice apartir da variavel = profundidade
+			int temCiclo = procuraProfundidade(grafo, profundidade, visitado, emProcessamento); // Começar a partir do vértice apartir da variavel = profundidade
 			if (temCiclo)
 			{
 				printf("O grafo possui ciclos.\n");
@@ -371,7 +370,8 @@ Grafo* insertLastEdge(Grafo* grafo, int valor, int x, int y)
 
 
 
-int DFS(Grafo* grafo, int vertice, int* visitado, int* emProcessamento)
+// Procura em Profundidade
+int procuraProfundidade(Grafo* grafo, int vertice, int* visitado, int* emProcessamento)
 {
 	Grafo* v = encontrarVertice(grafo, vertice);
 	if (!v) return 0; // Se o vértice não for encontrado, retorna 0
@@ -397,6 +397,9 @@ int DFS(Grafo* grafo, int vertice, int* visitado, int* emProcessamento)
 	return 0; // Não encontrou ciclo
 }
 
+
+
+// Vai encontrar o vertice para o procuraProfundidade
 Grafo* encontrarVertice(Grafo* grafo, int vertice)
 {
 	while (grafo)
