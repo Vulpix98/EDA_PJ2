@@ -36,7 +36,7 @@ void menu(Grafo* grafo)
 		printf("1) Menu Principal\n\n");
 		printf("1- Orientacao do grafo\n");
 		printf("2- Listar\n");
-		printf("3- Futuras implementacoes\n");
+		printf("3- Procura em profundidade!\n");
 		printf("0- Sair\n\n");
 		printf("Opcao: ");
 		scanf("%d", &option);
@@ -52,9 +52,34 @@ void menu(Grafo* grafo)
 		case 1:
 			grafo = menuOrientacao(grafo);
 			break;
+		
 		case 2:
 			listar(grafo);
 			break;
+
+		case 3:
+		{
+			// Testar DFS
+			int profundidade = 0;
+			int* visitado = (int*)calloc(100, sizeof(int)); // Assume no máximo 100 vértices
+			int* emProcessamento = (int*)calloc(100, sizeof(int)); // Status dos vértices em processamento
+
+			printf("Procura em profundidade: ");
+			scanf("%d", &profundidade);
+			int temCiclo = DFS(grafo, profundidade, visitado, emProcessamento); // Começar a partir do vértice apartir da variavel = profundidade
+			if (temCiclo)
+			{
+				printf("O grafo possui ciclos.\n");
+			}
+			else
+			{
+				printf("O grafo nao possui ciclos.\n");
+			}
+
+			free(visitado);
+			free(emProcessamento);
+			break;
+		}
 			
 		default:
 			printf("Valor invalido");
@@ -342,4 +367,43 @@ Grafo* insertLastEdge(Grafo* grafo, int valor, int x, int y)
 		grafo->seguinte = insertLastEdge(grafo->seguinte, valor, x, y);
 		return (grafo);
 	}
+}
+
+
+
+int DFS(Grafo* grafo, int vertice, int* visitado, int* emProcessamento)
+{
+	Grafo* v = encontrarVertice(grafo, vertice);
+	if (!v) return 0; // Se o vértice não for encontrado, retorna 0
+
+	if (emProcessamento[vertice])
+		return 1; // Encontrou um ciclo, pois o vértice já está em processamento
+
+	if (visitado[vertice])
+		return 0; // Se o vértice já foi visitado e não está em processamento, não há ciclo
+
+	visitado[vertice] = 1; // Marca o vértice como visitado
+	emProcessamento[vertice] = 1; // Marca o vértice como em processamento
+
+	Aresta* aresta = v->aresta;
+	while (aresta)
+	{
+		if (DFS(grafo, aresta->valor, visitado, emProcessamento))
+			return 1; // Se encontrar um ciclo em alguma aresta, retorna 1
+		aresta = aresta->seguinte; // Move para a próxima aresta
+	}
+
+	emProcessamento[vertice] = 0; // Marca o vértice como não estando mais em processamento
+	return 0; // Não encontrou ciclo
+}
+
+Grafo* encontrarVertice(Grafo* grafo, int vertice)
+{
+	while (grafo)
+	{
+		if (grafo->vertice == vertice)
+			return grafo; // Retorna o vértice se for encontrado
+		grafo = grafo->seguinte; // Move para o próximo vértice
+	}
+	return NULL; // Retorna NULL se o vértice não for encontrado
 }
