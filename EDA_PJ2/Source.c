@@ -12,7 +12,7 @@ void main()
 	grafo = createGraph();
 
 	// serve para testes
-	grafo = insertEdgeToVertex(grafo, 3);
+	//grafo = insertEdgeToVertex(grafo, 3);
 
 	listar(grafo);
 
@@ -99,7 +99,7 @@ Grafo* menuOrientacao(Grafo* grafo)
 		printf("1- Direita e Baixo\n");
 		printf("2- Esquerda e Cima\n");
 		printf("3- Ambos as opcoes\n");
-		printf("0- Sair\n\n");
+		printf("0- Voltar ao menu principal\n\n");
 		printf("Opcao: ");
 		scanf("%d", &valor);
 		printf("\n\n\n");
