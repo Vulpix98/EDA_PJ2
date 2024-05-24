@@ -388,7 +388,7 @@ int procuraProfundidade(Grafo* grafo, int vertice, int* visitado, int* emProcess
 	Aresta* aresta = v->aresta;
 	while (aresta)
 	{
-		if (DFS(grafo, aresta->valor, visitado, emProcessamento))
+		if (procuraProfundidade(grafo, aresta->valor, visitado, emProcessamento))
 			return 1; // Se encontrar um ciclo em alguma aresta, retorna 1
 		aresta = aresta->seguinte; // Move para a próxima aresta
 	}
