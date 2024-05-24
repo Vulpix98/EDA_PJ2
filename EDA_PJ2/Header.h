@@ -38,7 +38,7 @@ Grafo* deleteEdge(Grafo* grafo);
 Grafo* menuOrientacao(Grafo* grafo);
 
 
-int DFS(Grafo* grafo, int vertice, int* visitado, int* emProcessamento);
+int procuraProfundidade(Grafo* grafo, int vertice, int* visitado, int* emProcessamento);
 Grafo* encontrarVertice(Grafo* grafo, int vertice);
 
 void menu(Grafo* grafo);
