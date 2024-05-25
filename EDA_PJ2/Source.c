@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <limits.h>
 #include "Header.h"
 
 void main() 
@@ -37,6 +38,7 @@ void menu(Grafo* grafo)
 		printf("1- Orientacao do grafo\n");
 		printf("2- Listar\n");
 		printf("3- Procura em profundidade!\n");
+		printf("4- Soma dos valores dado um caminho!\n");
 		printf("0- Sair\n\n");
 		printf("Opcao: ");
 		scanf("%d", &option);
@@ -77,6 +79,24 @@ void menu(Grafo* grafo)
 
 			free(visitado);
 			free(emProcessamento);
+			break;
+		}
+
+		case 4:
+		{
+			int verticeOrigem, verticeDestino;
+			printf("Digite o vertice de origem: ");
+			scanf("%d", &verticeOrigem);
+			printf("Digite o vertice de destino: ");
+			scanf("%d", &verticeDestino);
+
+			int somaCaminho = calcularSomaCaminho(grafo, verticeOrigem, verticeDestino);
+			if (somaCaminho != 0) {
+				printf("A soma dos valores ao longo do caminho do vertice %d ao vertice %d e: %d\n\n", verticeOrigem, verticeDestino, somaCaminho);
+			}
+			else {
+				printf("Nao existe um caminho entre os vertices de origem e destino.\n\n");
+			}
 			break;
 		}
 			
@@ -409,4 +429,90 @@ Grafo* encontrarVertice(Grafo* grafo, int vertice)
 		grafo = grafo->seguinte; // Move para o próximo vértice
 	}
 	return NULL; // Retorna NULL se o vértice não for encontrado
+}
+
+
+
+int calcularSomaCaminho(Grafo* grafo, int verticeOrigem, int verticeDestino) {
+	// Verifica se os vértices de origem e destino estão presentes no grafo
+	Grafo* origem = encontrarVertice(grafo, verticeOrigem);
+	Grafo* destino = encontrarVertice(grafo, verticeDestino);
+
+	if (origem == NULL || destino == NULL) {
+		printf("Pelo menos um dos vértices não foi encontrado no grafo.\n");
+		return 0; // Retorna 0 se um dos vértices não for encontrado
+	}
+
+	// Array para marcar os vértices visitados durante a busca em profundidade
+	int* visitado = (int*)calloc(100, sizeof(int)); // Assume no máximo 100 vértices
+	if (visitado == NULL) {
+		printf("Erro de alocação de memória.\n");
+		return 0;
+	}
+
+	// Verifica se há um caminho entre os vértices de origem e destino usando busca em profundidade
+	int* emProcessamento = (int*)calloc(100, sizeof(int)); // Array para marcar os vértices em processamento
+	if (emProcessamento == NULL) {
+		printf("Erro de alocação de memória.\n");
+		free(visitado); // Libera a memória alocada para o array de visitados
+		return 0;
+	}
+
+	int caminhoExiste = procuraProfundidade(grafo, verticeOrigem, visitado, emProcessamento);
+	free(visitado); // Libera a memória alocada para o array de visitados
+	free(emProcessamento); // Libera a memória alocada para o array de emProcessamento
+
+	if (!caminhoExiste) {
+		printf("Não existe um caminho entre os vértices de origem e destino.\n");
+		return 0; // Retorna 0 se não há um caminho entre os vértices
+	}
+
+	// Realiza a soma dos valores ao longo do caminho
+	int soma = 0;
+	caminhoExiste = calcularSomaRecursiva(grafo, verticeOrigem, verticeDestino, &soma, visitado);
+
+	if (!caminhoExiste) {
+		printf("Erro ao calcular a soma do caminho.\n");
+		return 0; // Retorna 0 se houver um erro ao calcular a soma do caminho
+	}
+
+	return soma; // Retorna a soma dos valores ao longo do caminho
+}
+
+
+// Função auxiliar para calcular a soma recursivamente
+int calcularSomaRecursiva(Grafo* grafo, int verticeAtual, int verticeDestino, int* soma, int* visitado) {
+	// Caso base: se o vértice atual for igual ao vértice de destino, a soma é concluída
+	if (verticeAtual == verticeDestino) {
+		return 1; // Indica que a soma foi concluída com sucesso
+	}
+
+	// Marca o vértice atual como visitado
+	visitado[verticeAtual] = 1;
+
+	// Percorre as arestas do vértice atual
+	Grafo* v = encontrarVertice(grafo, verticeAtual);
+	if (!v) return 0; // Retorna 0 se o vértice não for encontrado
+
+	Aresta* aresta = v->aresta;
+	while (aresta) {
+		// Verifica se o vértice adjacente ainda não foi visitado
+		int caminhoExiste = !visitado[aresta->valor];
+		if (caminhoExiste) {
+			// Incrementa a soma com o valor da aresta
+			*soma += aresta->valor;
+
+			// Realiza a chamada recursiva para o vértice adjacente
+			caminhoExiste = calcularSomaRecursiva(grafo, aresta->valor, verticeDestino, soma, visitado);
+			if (caminhoExiste) {
+				return 1; // Se um caminho foi encontrado, retorna 1
+			}
+
+			// Se não encontrar um caminho a partir deste vértice adjacente, subtrai o valor da aresta da soma
+			*soma -= aresta->valor;
+		}
+		aresta = aresta->seguinte; // Move para a próxima aresta
+	}
+
+	return 0; // Retorna 0 se não encontrar um caminho
 }
