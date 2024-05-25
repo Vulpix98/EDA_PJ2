@@ -41,5 +41,10 @@ Grafo* menuOrientacao(Grafo* grafo);
 int procuraProfundidade(Grafo* grafo, int vertice, int* visitado, int* emProcessamento);
 Grafo* encontrarVertice(Grafo* grafo, int vertice);
 
+
+int calcularSomaCaminho(Grafo* grafo, int verticeOrigem, int verticeDestino);
+int calcularSomaRecursiva(Grafo* grafo, int verticeAtual, int verticeDestino, int* soma, int* visitado);
+
+
 void menu(Grafo* grafo);
 void listar(Grafo* grafo);
