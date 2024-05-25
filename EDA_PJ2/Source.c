@@ -433,6 +433,7 @@ Grafo* encontrarVertice(Grafo* grafo, int vertice)
 
 
 
+// Função para calcular a Soma dado Caminho
 int calcularSomaCaminho(Grafo* grafo, int verticeOrigem, int verticeDestino) {
 	// Verifica se os vértices de origem e destino estão presentes no grafo
 	Grafo* origem = encontrarVertice(grafo, verticeOrigem);
@@ -478,6 +479,7 @@ int calcularSomaCaminho(Grafo* grafo, int verticeOrigem, int verticeDestino) {
 
 	return soma; // Retorna a soma dos valores ao longo do caminho
 }
+
 
 
 // Função auxiliar para calcular a soma recursivamente
