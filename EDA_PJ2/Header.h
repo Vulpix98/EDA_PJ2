@@ -33,6 +33,11 @@ Grafo* testEdgeDown(Grafo* grafo, Grafo* grf1, Grafo* grf2);
 Grafo* insertLastVertex(Grafo* grafo, int vertice, int x, int y, Aresta* aresta);
 Grafo* createGraph();
 Grafo* deleteEdge(Grafo* grafo);
+Grafo* selectVertexMenu(Grafo* grafo);
+Grafo* removeVertex(Grafo* grafo, int vertice);
+Grafo* RemoveSingleEdge(Grafo* grafo, int x, int y);
+void maxSumRecursive(Grafo* node, int* xSelected, int* ySelected, int currentSum, int* maxSum);
+int findMaxSum(Grafo* grafo);
 
 
 Grafo* menuOrientacao(Grafo* grafo);
